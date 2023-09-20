@@ -1,29 +1,29 @@
-import { useState } from "react";
+import { useInput } from '../hooks/useInput'
 
-const SimpleInput = (props) => {
-  const [enteredName, setEnteredName] = useState("");
-  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+const SimpleInput = () => { 
 
-  const enteredNameIsValid = enteredName.trim() !== ''
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched
+  const {
+    enterdValue: enteredName,
+    isValid: enteredNameIsValid,
+    hasError: nameInputIsInvalid,
+    valueChangeHandler: nameInputChangeHandler,
+    inputblurHandler: nameInputBlurHandler,
+    reset: resetName
+  } = useInput((name)=>name.trim() !=='') 
 
-  const nameInputChangeHandler = (e) => {
-    setEnteredName(e.target.value);
-  };
+ 
 
-  const nameInputBlurHandler = (e) =>{
-    setEnteredNameTouched(true)
-  }
+ 
+
+  
 
   const formSubmissionHandler = (e) => {
     e.preventDefault();
-    setEnteredNameTouched(true)
 
     if (!enteredNameIsValid) {
       return;
     }
-    setEnteredName("");
-    setEnteredNameTouched(false)
+    resetName()
   };
 
 
