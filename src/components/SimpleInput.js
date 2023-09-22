@@ -1,33 +1,44 @@
-import { useInput } from '../hooks/useInput'
+import useInput from "../hooks/useInput";
 
-const SimpleInput = () => { 
-
+const SimpleInput = () => {
   const {
-    enterdValue: enteredName,
+    enteredValue: enteredName,
     isValid: enteredNameIsValid,
     hasError: nameInputIsInvalid,
     valueChangeHandler: nameInputChangeHandler,
-    inputblurHandler: nameInputBlurHandler,
-    reset: resetName
-  } = useInput((name)=>name.trim() !=='') 
+    inputBlurHandler: nameInputBlurHandler,
+    reset: resetName,
+  } = useInput((name) => name.trim() !== "");
 
- 
-
- 
-
-  
+  const {
+    enteredValue: enteredEmail,
+    isValid: enteredEmailIsValid,
+    hasError: emailInputIsInvalid,
+    valueChangeHandler: emailInputChangeHandler,
+    inputBlurHandler: emailInputBlurHandler,
+    reset: resetEmail,
+  } = useInput((email) => email.includes("@"));
 
   const formSubmissionHandler = (e) => {
     e.preventDefault();
 
-    if (!enteredNameIsValid) {
+    if (!enteredNameIsValid && !enteredEmailIsValid) {
       return;
     }
     resetName()
+    resetEmail();
   };
 
+  let formIsValid = false;
+  if (enteredNameIsValid && enteredEmailIsValid) {
+    formIsValid = true;
+  }
 
   const nameInputClasses = nameInputIsInvalid
+    ? "form-control invalid"
+    : "form-control";
+
+  const emailInputClasses = emailInputIsInvalid
     ? "form-control invalid"
     : "form-control";
 
@@ -46,8 +57,21 @@ const SimpleInput = () => {
           <p className="'error-text">Name must not be empty</p>
         )}
       </div>
+      <div className={emailInputClasses}>
+        <label htmlFor="email">Your Email</label>
+        <input
+          type="text"
+          id="email"
+          value={enteredEmail}
+          onChange={emailInputChangeHandler}
+          onBlur={emailInputBlurHandler}
+        />
+        {emailInputIsInvalid && (
+          <p className="'error-text">Email must contain an '@' symbol</p>
+        )}
+      </div>
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
