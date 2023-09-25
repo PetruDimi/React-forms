@@ -16,7 +16,7 @@ const useInput = (validationFunc) =>{
     }
 
     const reset = () =>{
-        setEnteredValue('')
+        setValue('')
         setIsTouched(false)
     }
 
